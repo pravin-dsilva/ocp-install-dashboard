@@ -45,7 +45,7 @@ def login():
         #r = requests.get(url, allow_redirects=True)
         #open(tenplates_loc + '/index.html', 'wb').write(r.content)
         message = "OpenShift on Power Deployment"
-        return render_template('index.html', message=message)
+        return render_template('login.html', message=message)
 
 @app.route('/create',methods = ['POST', 'GET'])
 @cross_origin()
@@ -67,7 +67,7 @@ def landing():
         #r = requests.get(url, allow_redirects=True)
         #open(tenplates_loc + '/deploy.html', 'wb').write(r.content)
         message = "OpenShift on Power Deployment"
-        return render_template('deploy.html',  js_data=js_data)
+        return render_template('ocp-form.html',  js_data=js_data)
 
 
 @app.route('/deploy',methods = ['POST', 'GET'])
@@ -87,10 +87,14 @@ def deploy():
             print('ERROR : Cluster Name not provided')
         login_data=json.dumps(data)
         test_user = data["emailid"]
-        trigger.job_trigger(name,ocpversion,data["options"],test_user)
+        platform = 'powervm'
+        trigger.job_trigger(name,ocpversion,data["options"],test_user,platform)
         time.sleep(10)
-        json_collect.job_data()
-        js_data = json_process.job_details(test_user) 
+        json_collect.job_data(platform)
+        if platform == 'powervs':
+           js_data = json_process.job_details_pvs(test_user)
+        else:
+           js_data = json_process.job_details_pvm(test_user)
         #write to db
         tenplates_loc = "templates"
         #url = 'https://raw.githubusercontent.com/pravin-dsilva/ocp-install-dashboard/html-bootstrap/displayStacks.html'
@@ -106,9 +110,13 @@ def refreshStacks():
         abort(400)
     data = request.form
     test_user = data["emailid"]
-    json_collect.job_data()
+    platform = 'powervm'
+    json_collect.job_data(platform)
     login_data=json.dumps(data)
-    js_data = json_process.job_details(test_user)
+    if platform == 'powervs':
+       js_data = json_process.job_details_pvs(test_user)
+    else:
+       js_data = json_process.job_details_pvm(test_user)
     tenplates_loc = "templates"
     #url = 'https://raw.githubusercontent.com/pravin-dsilva/ocp-install-dashboard/html-bootstrap/displayStacks.html'
     #r = requests.get(url, allow_redirects=True)
@@ -123,11 +131,15 @@ def deleteCluster():
         login = data["emailid"]
     #Trigger delete cluster job
     test_user = data["emailid"]
-    destroy_alt.job_trigger(data['clusterid'],test_user)
+    platform = 'powervm'
+    destroy_alt.job_trigger(data['clusterid'],test_user,platform)
     time.sleep(10)
-    json_collect.job_data()
+    json_collect.job_data(platform)
     login_data=json.dumps(data)
-    js_data = json_process.job_details(test_user)
+    if platform == 'powervs':
+       js_data = json_process.job_details_pvs(test_user)
+    else:
+       js_data = json_process.job_details_pvm(test_user)
     return render_template('displayStacks.html', js_data=js_data, login_data=login_data)
 
 if __name__ == '__main__':
