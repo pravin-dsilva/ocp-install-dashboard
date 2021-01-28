@@ -87,11 +87,12 @@ def deploy():
             print('ERROR : Cluster Name not provided')
         login_data=json.dumps(data)
         test_user = data["emailid"]
+        #platform should be set from form value
         platform = 'powervm'
         trigger.job_trigger(name,ocpversion,data["options"],test_user,platform)
         time.sleep(10)
         json_collect.job_data(platform)
-        if platform == 'powervs':
+        if platform == 'PowerVS':
            js_data = json_process.job_details_pvs(test_user)
         else:
            js_data = json_process.job_details_pvm(test_user)
@@ -110,10 +111,11 @@ def refreshStacks():
         abort(400)
     data = request.form
     test_user = data["emailid"]
+    #platform should be set from form value
     platform = 'powervm'
     json_collect.job_data(platform)
     login_data=json.dumps(data)
-    if platform == 'powervs':
+    if platform == 'PowerVS':
        js_data = json_process.job_details_pvs(test_user)
     else:
        js_data = json_process.job_details_pvm(test_user)
@@ -131,12 +133,13 @@ def deleteCluster():
         login = data["emailid"]
     #Trigger delete cluster job
     test_user = data["emailid"]
+    #platform should be set from form value
     platform = 'powervm'
     destroy_alt.job_trigger(data['clusterid'],test_user,platform)
     time.sleep(10)
     json_collect.job_data(platform)
     login_data=json.dumps(data)
-    if platform == 'powervs':
+    if platform == 'PowerVS':
        js_data = json_process.job_details_pvs(test_user)
     else:
        js_data = json_process.job_details_pvm(test_user)

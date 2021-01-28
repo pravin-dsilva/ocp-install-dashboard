@@ -5,7 +5,7 @@ def job_trigger(name,ocpversion,flavor,user,platform):
     username = 'shilpi12@in.ibm.com'
     token = '<token>'
 
-    if platform == 'powervs':
+    if platform == 'PowerVS':
        job = 'demo-powervs-job-with-parameters'
        if flavor == 'small':
           req_obj = {'json' : '{"parameter":[{"name":"ClusterName","value":"'+name+'"},{"name":"OcpRelease","value":"'+ocpversion+'"},{"name":"MemMaster","value":"16"},{"name":"ProcessorMaster","value":".5"},{"name":"CountMaster","value":"3"},{"name":"MemWorker","value":"16"},{"name":"ProcessorWorker","value":".5"},{"name":"CountWorker","value":"2"},{"name":"UserName","value":"'+user+'"},{"name":"Region","value":"lon"}]}', 'token' : ''+token}
