@@ -6,7 +6,7 @@ def job_data(platform):
     username = 'shilpi12@in.ibm.com'
     token = '<token>'
 
-    if platform == 'powervs':
+    if platform == 'PowerVS':
        job = 'demo-powervs-job-with-parameters'
     else:
        job = 'demo-powervc-job-with-parameters'

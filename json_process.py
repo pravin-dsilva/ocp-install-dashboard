@@ -23,14 +23,17 @@ def job_details_pvm(user):
                     bn = j['number']
                     if j['result'] is None:
                        bs = 'Pending'
+                       ocurl = 'Pending'
                     elif j['result'] == 'SUCCESS':
                        bs = 'Running'
+                       ocurl = 'https://console-openshift-console.apps.{}.redhat.com'.format(cn)
                     elif j['result'] == 'FAILURE':
                        bs = 'Failed'
+                       ocurl = 'NA'
                     else:
                        continue
                     Dict = {}
-                    Dict = dict({"ID":str(bn),"ClusterName":cn,"OcpVersion":ov,"Status":bs})
+                    Dict = dict({"ID":str(bn),"ClusterName":cn,"OcpVersion":ov,"Status":bs,"console_url":ocurl})
                     list.append(Dict)
     Dict = {}
     Dict = dict({'Cluster' : list})
@@ -63,14 +66,17 @@ def job_details_pvs(user):
                     bn = j['number']
                     if j['result'] is None:
                        bs = 'Pending'
+                       ocurl = 'Pending'
                     elif j['result'] == 'SUCCESS':
                        bs = 'Running'
+                       ocurl = 'https://console-openshift-console.apps.{}.redhat.com'.format(cn)
                     elif j['result'] == 'FAILURE':
                        bs = 'Failed'
+                       ocurl = 'NA'
                     else:
                        continue
                     Dict = {}
-                    Dict = dict({"ID":str(bn),"ClusterName":cn,"OcpVersion":ov,"Status":bs})
+                    Dict = dict({"ID":str(bn),"ClusterName":cn,"OcpVersion":ov,"Status":bs,"console_url":ocurl})
                     list.append(Dict)
     Dict = {}
     Dict = dict({'Cluster' : list})

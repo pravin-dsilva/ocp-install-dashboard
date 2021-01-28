@@ -109,7 +109,8 @@
       var obj = arr.filter(item => {
         return item.ID === titleData
       })[0];
-      modalBodyHTML = "<br/><p>OCP Version: " + obj.OcpVersion + "</p><p>Cluster Status: " + obj.Status + "</p><p>Cluster ID: " + obj.ID + "</p>"
+      if (obj.Status == "Running") { modalBodyHTML = "<br/><p>OCP Version: " + obj.OcpVersion + "</p><p>Cluster Status: " + obj.Status + "</p><p>Console URL: <a href=\"" + obj.console_url + "\" target=\"_blank\">" + obj.console_url + "</a></p><p>Cluster ID: " + obj.ID + "</p>" }
+      else { modalBodyHTML = "<br/><p>OCP Version: " + obj.OcpVersion + "</p><p>Cluster Status: " + obj.Status + "</p><p>Cluster ID: " + obj.ID + "</p>"}
       document.getElementById("modal-title").innerText = obj.ClusterName;
       document.getElementById("modal-body").innerHTML = modalBodyHTML;
       document.getElementById("modal-header").style.backgroundColor = getColorCode(obj.Status);
